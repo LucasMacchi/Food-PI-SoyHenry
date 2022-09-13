@@ -1,0 +1,20 @@
+
+API KEY = 54d51ec236d4477c9d9f91ec7c8cb8ba
+&addRecipeInformation=true
+
+BackEnd
+
+Rutas a hacer: CRUD Basico
+    - Ruta que traiga los detalles especificos de cada receta
+    - Ruta que permita modificar una receta
+    - Ruta que permita eliminar una receta
+    - Ruta que permita agregar una receta
+
+Base de Datos: Entidades
+    - Receta 
+    - Tipo de Dieta
+    Estas dos tienen una relacion de muchos a muchos
+    ya que una receta puede ser parte de varios tipos de dieta en simultaneo y, 
+    a su vez, un tipo de dieta puede contener múltiples recetas distinta
+    
+10/09 => Terminar el getRecipeByDiet

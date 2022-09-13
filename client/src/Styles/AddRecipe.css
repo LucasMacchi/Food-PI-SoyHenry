@@ -1,0 +1,38 @@
+#div_addForm{
+    text-align: center;
+    background-color: darkslategray;
+    display: block;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    margin-top: 7.27pc;
+    margin-bottom: 12.48pc;
+    margin-right: 35pc;
+    margin-left: 35pc;
+    border-radius: 2pc;
+    padding-left: 15pc;
+    padding-right: 15pc;
+
+}
+#tituloAddForm{
+    font-size:x-large;
+}
+
+.addRecipe_label{
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+
+}
+#Boton_AddRecipe{
+    margin-top: 20px;
+    
+}
+.danger{
+    text-align: right;
+    font-size: small;
+    color: red;
+    font-weight: 1000;
+}
+#exitoso{
+    color: blue;
+}

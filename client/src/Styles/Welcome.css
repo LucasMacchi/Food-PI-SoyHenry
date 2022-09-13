@@ -1,0 +1,21 @@
+.titulo{
+    text-align: center;
+}
+.texto_welcome{
+
+    text-align: center;
+}
+#welcome{
+    background-color: rgb(97, 122, 122);
+    display: block;
+    text-align: center;
+    padding-bottom: 50px;
+    padding-top: 50px;
+    margin-top: 7.27pc;
+    margin-bottom: 9.4pc;
+    margin-right: 30pc;
+    margin-left: 30pc;
+    border-radius: 2pc;
+
+}
+

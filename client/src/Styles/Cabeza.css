@@ -1,0 +1,22 @@
+.encabezado{
+    background-color: white;
+    display: block;   
+    padding-bottom: 1px;
+
+    
+}
+.titulo{
+    display: block;
+    text-align: center;
+
+}
+.tituloMain{
+    text-align: center;
+    font-family:'Times New Roman', Times, serif;
+    color: darkslategray;
+}
+.desc{
+    display: block;
+    font-family:'Times New Roman', Times, serif;
+    color: darkslategray;
+}

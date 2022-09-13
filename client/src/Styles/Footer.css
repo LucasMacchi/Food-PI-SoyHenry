@@ -1,0 +1,15 @@
+.item{
+    color: white;
+    font-size: small;
+}
+.footer{
+    display: flex;
+    background-color: darkslategray;
+    justify-content: space-between;
+}
+#footer_div{
+    padding-top: 30px;
+
+    vertical-align: bottom;
+}
+ 
