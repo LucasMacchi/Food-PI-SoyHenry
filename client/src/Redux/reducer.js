@@ -3,9 +3,7 @@
 const initialState = {
     recipes: [],
     recipeDetail: {},
-    dietTypes: ['Vegan', 'Vegetarian', 'Gluten Free', 
-    'Dairy Free', 'Very Healthy', 'cheap', 'Ketogenic', 'LowFodmap', 
-    'Whole30', 'Paleolithic', 'Primal', 'Lacto-Vegetarian', 'Ovo-Vegetarian'],
+    dietTypes: [],
     filteredRecipes: []
 }
 
@@ -16,10 +14,25 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 recipes: state.recipes.concat(action.payload)
             }
+        case "GET_ALL_RECIPES_FROM_DB":
+                return{
+                    ...state,
+                    recipes: state.recipes.concat(action.payload)
+                }
         case "GET_RECIPE_DETAIL":
             return{
                 ...state,
                 recipeDetail: action.payload
+            }
+        case "GET_RECIPE_BY_NAME":
+            return{
+                ...state,
+                filteredRecipes:action.payload
+            }
+        case "GET_RECIPE_BY_HS":
+            return{
+                ...state,
+                filteredRecipes:action.payload
             }
         case "GET_RECIPE_BY_DIET":
             return{
@@ -41,6 +54,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 recipes: state.recipes.concat(action.payload)
             }
+        case "GET_DIETS":
+                return{
+                    ...state,
+                    dietTypes:action.payload
+                }
         default:
             return {...state}
     }

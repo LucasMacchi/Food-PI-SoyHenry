@@ -28,10 +28,6 @@ conn.sync({ force: false }).then(() => {
     try {
       conn.authenticate()
       console.log("Conexion a la DB exitosa")
-      //CrearDietas()
-      //console.log("Dietas Creadas")
-      //crearRecetas()
-      //console.log("Receta de Prueba Creada")
     } catch (error) {
       console.log("Error al conectar a la DB: " + error.message )
     }

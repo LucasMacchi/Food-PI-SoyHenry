@@ -22,7 +22,16 @@ const simplifier = (recipe) => {
     return simpleRecipe
     
 }
+const getAllRecipesDB = async () =>{
+    try {
+        const recipeInDB = await Recipe.findAll() 
+        return recipeInDB
+    } catch (error) {
+        throw new Error("Ocurrio un error: "+error.message) 
+    }
+   
 
+}
 const getAllRecipes = async () => {
     const recipeInDB = await Recipe.findAll()
 
@@ -267,7 +276,8 @@ module.exports = {
     deleteRecipe,
     updateDietInRecipe,
     deleteDietInRecipe,
-    getAllRecipes
+    getAllRecipes,
+    getAllRecipesDB
 
 
 }

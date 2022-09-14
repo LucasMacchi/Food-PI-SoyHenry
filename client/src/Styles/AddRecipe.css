@@ -1,7 +1,7 @@
 #div_addForm{
     text-align: center;
     background-color: darkslategray;
-    display: block;
+    display: inline-block;
     padding-bottom: 50px;
     padding-top: 50px;
     margin-top: 7.27pc;
@@ -35,4 +35,11 @@
 }
 #exitoso{
     color: blue;
+}
+#noExitoso{
+    color: red;
+}
+
+#formAdd{
+    display: inline-block;
 }

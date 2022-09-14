@@ -2,7 +2,7 @@ const {Op, Diet, Recipe} = require('../db')
 const { Router } = require('express');
 const { getRecipeById,
         getRecipeByName, postRecipe, getRecipeByHealthScore, updateRecipe, 
-        deleteRecipe,updateDietInRecipe,deleteDietInRecipe, getAllRecipes} = require('../utils/utilsRoutes');
+        deleteRecipe,updateDietInRecipe,deleteDietInRecipe, getAllRecipes, getAllRecipesDB} = require('../utils/utilsRoutes');
 const { route } = require('.');
 const router = Router();
 
@@ -28,6 +28,15 @@ router.get("/", async (req, res) => {
         }
     }
     
+})
+
+router.get("/allDB", async (req, res) => {
+    try {
+        const response = await getAllRecipesDB()
+        res.status(200).send(await response)
+    } catch (error) {
+        res.status(404).send(error.message)
+    }
 })
 
 router.get("/all", async (req, res) => {
