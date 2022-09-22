@@ -17,8 +17,8 @@ export default class Nav extends Component{
                     <NavLink to="/Agregar" className="link">
                         <span>Agregar una Receta</span>
                     </NavLink>
-                    <NavLink to="/Modificar" className="link">
-                        <span>Modificar recetas</span>
+                    <NavLink to="/Tus_recetas" className="link">
+                        <span>Tus recetas</span>
                     </NavLink>
                     <NavLink to="/About" className="link">
                         <span>Acerca de</span>

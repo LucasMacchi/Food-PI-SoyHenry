@@ -4,9 +4,9 @@ const idGeneratorDB = (id) => {
     return "D"+id
 }
 
-const dietTypes = ['Vegan', 'Vegetarian', 'Gluten Free', 
-'Dairy Free', 'Very Healthy', 'cheap', 'Ketogenic', 'LowFodmap', 
-'Whole30', 'Paleolithic', 'Primal', 'Lacto-Vegetarian', 'Ovo-Vegetarian']
+const dietTypes = ['vegan', 'vegetarian', 'gluten free', 
+'dairy free', 'very healthy', 'cheap', 'ketogenic', 'lowFodmap', 
+'whole 30', 'paleolithic', 'primal', 'lacto ovo vegetarian']
 
 
 

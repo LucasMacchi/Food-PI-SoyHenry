@@ -1,0 +1,33 @@
+#div_detail{
+    background-color: darkslategray;
+    text-align: center;
+    display: block;
+    margin-left: 15pc;
+    margin-right: 15pc;
+    border-radius: 2pc;
+}
+
+#div_detail_info{
+    text-align: center;
+
+}
+
+#div_detail_stats{
+    text-align: center;
+    display: flex;
+    justify-content:space-around;
+    margin-left: 15pc;
+    margin-right: 15pc;
+}
+
+#imagenDetail{
+    border-radius: 50%;
+}
+
+.parrafo{
+    white-space: pre-wrap;
+}
+.tituloDE{
+    font-weight: 900;
+    font-size: larger;
+}

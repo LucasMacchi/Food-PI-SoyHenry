@@ -1,7 +1,6 @@
-import { send } from "process";
 import React, { Component, useEffect } from "react";
 //redux
-import {useDispatch, useSelector, useReducer } from "react-redux";
+import {useDispatch, useSelector } from "react-redux";
 import * as actions from "../../Redux/actions"
 import "../../Styles/AddRecipe.css"
 
@@ -33,10 +32,8 @@ export function validate(input, recetas){
         return errors
 }
 
-
-
 export default function AddRecipe() {
-    const recetas = useSelector(state => state.recipes)
+    const recetas = useSelector(state => state.filteredRecipes)
 
     const dietTypes = useSelector(state => state.dietTypes)
     const dispatch = useDispatch()
@@ -89,9 +86,9 @@ export default function AddRecipe() {
     }
 
     const handleSubmit = (e) => {
-        e.preventDefault()
         console.log(input)
         dispatch(actions.create_Recipe(input))
+        alert("Receta Agregada")
         
     }
 
@@ -146,7 +143,7 @@ export default function AddRecipe() {
 
                     </div>
                     <div>
-                        {!errors.id && !errors.name && !errors.resumen && input.name.length > 0 && input.resumen.length > 0 ? <button id="Boton_AddRecipe" type="submit">Agregar</button> : <button id="Boton_AddRecipe" type="submit" disabled>Agregar</button>}
+                        {!errors.name && !errors.resumen && input.name.length > 0 && input.resumen.length > 0 ? <button id="Boton_AddRecipe" type="submit">Agregar</button> : <button id="Boton_AddRecipe" type="submit" disabled>Agregar</button>}
                     </div>
                 </form>
             </div>

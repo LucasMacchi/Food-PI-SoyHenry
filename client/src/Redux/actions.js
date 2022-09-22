@@ -7,8 +7,10 @@ const GET_RECIPE_BY_HS = "GET_RECIPE_BY_HS"
 const GET_RECIPE_BY_DIET = "GET_RECIPE_BY_DIET"
 const CREATE_RECIPE = "CREATE_RECIPE"
 const UPDATE_RECIPE = "UPDATE_RECIPE"
+const DELETE_RECIPE = "DELETE_RECIPE"
 const UPDATE_RECIPE_DIET = "UPDATE_RECIPE_DIET"
 const GET_DIETS = "GET_DIETS"
+
 
 const api = "http://localhost:3001"
 
@@ -31,7 +33,6 @@ export const getAllRecipesDB = () => {
         try {
             const res = await fetch(api + "/recipes/allDB")
             const json = await res.json()
-            console.log(json)
             dispatch({ type: GET_ALL_RECIPES_FROM_DB, payload: json })
         } catch (error) {
             console.log("Error al traer las recetas: "+error.message)
@@ -45,7 +46,6 @@ export const getRecipeDetail = (id) =>{
         try {
             const res = await fetch(api + "/recipes/"+id)
             const json = await res.json()
-            //console.log(json)
             dispatch({ type: GET_RECIPE_DETAIL, payload: json })
         } catch (error) {
             console.log("Error al traer las recetas: "+error.message)
@@ -58,7 +58,6 @@ export const getRecipeByName = (name) =>{
         try {
             const res = await fetch(api + "/recipes?name="+name)
             const json = await res.json()
-            console.log(json)
             dispatch({ type: GET_RECIPE_BY_NAME, payload: json })
         } catch (error) {
             console.log("Error al traer las recetas: "+error.message)
@@ -71,7 +70,6 @@ export const getRecipeByHS = (hs) =>{
         try {
             const res = await fetch(api + "/recipes?hs="+hs)
             const json = await res.json()
-            console.log(json)
             dispatch({ type: GET_RECIPE_BY_HS, payload: json })
         } catch (error) {
             console.log("Error al traer las recetas: "+error.message)
@@ -84,7 +82,6 @@ export const getRecipeByDiet = (diet) =>{
         try {
             const res = await fetch(api + "/diets/"+diet)
             const json = await res.json()
-            console.log(json)
             dispatch({ type: GET_RECIPE_BY_DIET, payload: json })
         } catch (error) {
             console.log("Error al traer las recetas: "+error.message)
@@ -98,7 +95,6 @@ export const create_Recipe = (recipe) =>{
             const data = JSON.stringify(recipe)
             console.log(data)
             await axios.post(api+"/recipes",recipe)
-
             dispatch({ type: CREATE_RECIPE, payload: data })
         } catch (error) {
             console.log("Error al crear la receta: "+error.message)
@@ -107,12 +103,47 @@ export const create_Recipe = (recipe) =>{
     }
 }
 
+export const updateRecipe = (id,body) => {
+    return async (dispatch) => {
+        try {
+            await axios.put(api+"/recipes/update/"+id,body)
+            //dispatch({ type: UPDATE_RECIPE, payload: data })
+
+        } catch (error) {
+            console.log("Error al crear la receta: "+error.message)
+        }
+    }
+}
+
+export const deleteRecipe = (id) => {
+    return async (dispatch) => {
+        try {
+            await axios.delete(api+"/recipes/delete/"+id)
+            dispatch({ type: UPDATE_RECIPE, payload: id })
+
+        } catch (error) {
+            console.log("Error al crear la receta: "+error.message)
+        }
+    }
+}
+
+export const addDiet = (body) => {
+    return async () => {
+        try {
+            console.log(body)
+            await axios.put(api+"/recipes/diet",body)
+
+        } catch (error) {
+            console.log("Error al actualizar la receta: "+error.message)
+        }
+    }
+}
+
 export const getDiets = () =>{
     return async (dispatch) => {
         try {
             const res = await fetch(api + "/diets")
             const json = await res.json()
-            console.log(json)
             dispatch({ type: GET_DIETS, payload: json })
         } catch (error) {
             console.log("Error al traer las dietas: "+error.message)

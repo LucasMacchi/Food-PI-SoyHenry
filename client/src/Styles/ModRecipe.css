@@ -1,0 +1,18 @@
+#modDiv{
+    display: flex;
+    justify-content: space-between;
+}
+
+.modComDiv{
+    background-color: darkslategray;
+    margin-top: 2pc;
+    margin-left: 1pc;
+    margin-right: 1pc;
+    padding: 2pc;
+    border-radius: 5pc;
+}
+ 
+.modFormDiv{
+    margin-bottom: 10pc;
+}
+

@@ -2,29 +2,46 @@ const {dietTypes} = require('../utils/utilsModels')
 const { QueryTypes, Sequelize } = require('sequelize');
 const {Op, Diet, Recipe} = require('../db')
 const {API_KEY} = process.env
-const axios = require('axios')
-const { response } = require('../app');
 const {db, conn} = require('../db');
-const { raw } = require('body-parser');
-const { all } = require('../routes');
-const RECETAS_API_SIMPLE = "https://api.spoonacular.com/recipes/complexSearch?apiKey="+API_KEY+"&addRecipeInformation=true&number=10"
-//const RECETAS_API_COMPLEX = "https://api.spoonacular.com/recipes/complexSearch?apiKey="+API_KEY+"&addRecipeInformation=true"
+const noImage = "https://img.icons8.com/ios/500/no-image.png"
+//const RECETAS_API_SIMPLE = "https://api.spoonacular.com/recipes/complexSearch?apiKey="+API_KEY+"&addRecipeInformation=true&number=10"
+const RECETAS_API_SIMPLE = "https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5"
 const simplifier = (recipe) => {
+    if(recipe.vegetarian) recipe.diets = recipe.diets.concat("vegetarian")
+    if(recipe.veryHealthy) recipe.diets = recipe.diets.concat("very healthy")
+    if(recipe.cheap) recipe.diets = recipe.diets.concat("cheap")
+    if(recipe.lowFodmap) recipe.diets = recipe.diets.concat("lowFodmap")
     const simpleRecipe = {
         id: recipe.id,
         name: recipe.title,
-        resumen: recipe.summary,
+        resumen: recipe.summary.split("<b>").join(" ").split("</b>").join(" ").split("<a href=").join("\n").split("</a>").join("\n").split(">").join("\n"),
         healthScore: recipe.healthScore,
         image: recipe.image,
-        steps: recipe.analyzedInstructions[0]?.steps.map(steps => steps.step).join("\n"),
+        steps: recipe.analyzedInstructions[0]?.steps.map(steps => steps.step).join("\n").split(".").join("\n"),
         diets: recipe.diets
     }
     return simpleRecipe
     
 }
+
+const simplifierDB = recipe => {
+    const simpleRecipe = {
+        id: recipe.id,
+        name: recipe.name,
+        resumen: recipe.resumen,
+        steps: recipe.steps,
+        healthScore: recipe.healthScore,
+        image: recipe.image ? recipe.image : noImage,
+        diets: recipe.diets.map(rep => rep.name)
+    }
+    return simpleRecipe
+}
+
+
 const getAllRecipesDB = async () =>{
     try {
-        const recipeInDB = await Recipe.findAll() 
+        let recipeInDB = await Recipe.findAll({include: "diets"}) 
+        recipeInDB = recipeInDB.map(rep => simplifierDB(rep))
         return recipeInDB
     } catch (error) {
         throw new Error("Ocurrio un error: "+error.message) 
@@ -33,7 +50,8 @@ const getAllRecipesDB = async () =>{
 
 }
 const getAllRecipes = async () => {
-    const recipeInDB = await Recipe.findAll()
+    let recipeInDB = await Recipe.findAll({include: "diets"})
+    recipeInDB = recipeInDB.map(rep => simplifierDB(rep))
 
     try {
         const allRecepies = await fetch(RECETAS_API_SIMPLE)
@@ -50,10 +68,9 @@ const getAllRecipes = async () => {
 const getRecipeByName = async (recipe) => {
     const recipeInDB = await Recipe.findAll({where: {
         name:{
-            [Op.like]: '%'+recipe+'%'
+            [Op.like]: '%'+recipe.toLowerCase()+'%'
         }
     }})
-    console.log(await recipeInDB)
     try {
         //Aqui lo que hago es una request a la api,
         //este me traera las recetas, lo hare json, filtrare los que tengan 
@@ -61,7 +78,7 @@ const getRecipeByName = async (recipe) => {
         const allRecepies = await fetch(RECETAS_API_SIMPLE)
         let data = await allRecepies.json()
         data = data.results.filter(rep => {
-            if(rep.title.includes(recipe)) return rep
+            if(rep.title.toLowerCase().includes(recipe.toLowerCase())) return rep
         })
         //console.log(data)
         data = data.map(rep => simplifier(rep))
@@ -74,7 +91,10 @@ const getRecipeByName = async (recipe) => {
 }
 
 const getRecipeById = async (idToCheck) => {
-    const recipeInDB = await Recipe.findOne({where: {id: idToCheck}, include: Diet})
+    let recipeInDB = await Recipe.findOne({where: {id: idToCheck}, include: "diets"})
+    
+    if(recipeInDB) recipeInDB = simplifierDB(recipeInDB)
+    
     
     if(recipeInDB) return recipeInDB
     else{
@@ -186,10 +206,11 @@ const updateRecipe = async (id, body) => {
             const healthScore = body.healthScore
             const steps = body.steps
             const image = body.image
+            console.log(body)
             await Recipe.update({
             name: name ? name : receta.name,
-            resumen: resumen ? resumen : receta.resumen,
-            healthScore: healthScore ? healthScore : receta.healthScore,
+            resumen: resumen  ? resumen : receta.resumen,
+            healthScore: healthScore  ? healthScore : receta.healthScore,
             steps:steps ? steps : receta.steps,
             image:image ? image : receta.image,
         },{where: {id: id}})

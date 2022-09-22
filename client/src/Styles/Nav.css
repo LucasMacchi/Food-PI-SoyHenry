@@ -12,9 +12,12 @@
 }
 .link{
     color: aliceblue;
-
+    text-decoration: none;
     padding: 15px;
     padding-left: 50px;
     padding-right: 50px;
     text-align: center;
+}
+.link:hover{
+    background-color: rgb(82, 116, 116);
 }

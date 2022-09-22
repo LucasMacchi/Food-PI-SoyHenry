@@ -6,7 +6,7 @@
     text-align: center;
 }
 #welcome{
-    background-color: rgb(97, 122, 122);
+    background-color: darkslategray;
     display: block;
     text-align: center;
     padding-bottom: 50px;
@@ -16,6 +16,7 @@
     margin-right: 30pc;
     margin-left: 30pc;
     border-radius: 2pc;
+    
 
 }
 

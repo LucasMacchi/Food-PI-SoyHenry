@@ -1,0 +1,13 @@
+.div_about{
+
+    text-align: center;
+    background-color: darkslategray;
+    width: 25%;
+    height: 10%;
+    padding-top: 1pc;
+    padding-bottom: 1pc;
+    margin-left: 35%;
+    margin-top: 6.4pc;
+    margin-bottom: 6.4pc;
+    border-radius: 2pc;
+}

@@ -93,7 +93,7 @@ router.delete("/delete/:id", async (req, res) => {
 
 router.put("/diet", async (req, res) => {
     const {order} = req.body
-    console.log(order)
+    console.log("LA ORDEN FUE = "+order)
     if(order === "delete"){
         try {
             const response = await deleteDietInRecipe(req.body)

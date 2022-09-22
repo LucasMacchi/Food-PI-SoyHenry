@@ -1,0 +1,23 @@
+#headerHome{
+    display: flex;
+    justify-content: space-between;
+    background-color: darkslategray;
+    padding: 1pc;
+}
+
+#homeDiv{
+    min-height: 41.1pc;
+}
+
+#paginadoHome{
+    font-weight: 600;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: darkslategray;
+    margin-top: 2pc;
+    
+    padding-top: 1pc;
+    padding-bottom: 1pc;
+    border-radius: 5pc;
+}

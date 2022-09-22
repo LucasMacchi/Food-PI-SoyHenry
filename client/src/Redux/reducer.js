@@ -17,7 +17,7 @@ const rootReducer = (state = initialState, action) => {
         case "GET_ALL_RECIPES_FROM_DB":
                 return{
                     ...state,
-                    recipes: state.recipes.concat(action.payload)
+                    filteredRecipes:action.payload
                 }
         case "GET_RECIPE_DETAIL":
             return{
@@ -49,11 +49,11 @@ const rootReducer = (state = initialState, action) => {
                 ...state,
                 recipes: state.recipes.concat(action.payload)
             }
-        case "UPDATE_RECIPE_DIET":
-            return{
-                ...state,
-                recipes: state.recipes.concat(action.payload)
-            }
+        case "DELETE_RECIPE":
+                return{
+                    ...state,
+                    recipes: state.recipes.filter((rep) => rep.id !== action.payload),
+                }
         case "GET_DIETS":
                 return{
                     ...state,
