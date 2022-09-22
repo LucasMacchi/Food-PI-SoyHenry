@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from "react";
+import React, { useEffect } from "react";
 //redux
 import {useDispatch, useSelector } from "react-redux";
 
