@@ -10,7 +10,8 @@ module.exports = (sequelize) => {
       primaryKey: true,
       allowNull: false,
       set(value){
-        this.setDataValue('id',idGeneratorDB(value) )
+        this.setDataValue('id',idGeneratorDB(value) ) 
+        //Este lo manda a una funcion que retorna el id pero con una D al inicio, ejemplo, D42, lo hago con un set, que agarra el valor que se ingreso y hace algo con el mismo
       }
 
     },

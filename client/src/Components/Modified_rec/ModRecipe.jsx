@@ -6,7 +6,7 @@ import * as actions from "../../Redux/actions"
 import "../../Styles/ModRecipe.css"
 
 
-
+//Valido que el nombre no tenga caracteres especiales, que el healthscore sea un numero y sea entre 1 y 100
 export function validate(input){
     let errors = {}
         if(/[.!@#$%^&*()_+-=]/.test(input.name)){
@@ -25,12 +25,12 @@ export function validate(input){
 export default function ModRecipe(props) {
     const receta = useSelector(state => state.recipeDetail)
     const dietTypes = useSelector(state => state.dietTypes)
-    const parametroID = props.match.params.id
+    const parametroID = props.match.params.id   //traigo el id que viene como parametro en la URL
     const history = useHistory()
     const dispatch = useDispatch()
     
     
-
+    //Estado que uso para controlar la informacion que voy a enviar
     const [input, setInput] = React.useState({
         name: "",
         resumen: "",
@@ -39,7 +39,7 @@ export default function ModRecipe(props) {
         image: "",
 
     })
-
+    //Estado que uso para mostrar la receta que estoy modificando
     const [detail, setDetail] = React.useState({
         name: "",
         resumen: "",
@@ -49,14 +49,17 @@ export default function ModRecipe(props) {
         image: "",
     })
 
-    const [type, setType] = React.useState({type:""})
-    const [errors, setErrors] = React.useState({});
-    const [diet, setDiet] = React.useState({diet:""})
+    const [type, setType] = React.useState({type:""})   //Estado que uso para saber el tipo de accion que voy a hacer con las dietas
+    const [errors, setErrors] = React.useState({}); // Estado que uso para controlar los errores del formulario
+    const [diet, setDiet] = React.useState({diet:""})   // Esta es la dieta que voy a agreagar o eliminar
 
+    //Cargo los detalles de la receta y las dietas al montar el componente
     useEffect(() => {
         dispatch(actions.getRecipeDetail(parametroID))
         dispatch(actions.getDiets())
     },[])
+
+    //Cada vez que receta se modifique, se cargaran devuelta los datos de detalles
 
     useEffect(() => {
         console.log(receta)
@@ -69,6 +72,8 @@ export default function ModRecipe(props) {
             image: receta.image,
         })
     },[receta])
+
+    //Al estar escribiendo, va chequeando si hay errores y los carga al estado de los mismos
 
     const handleChange = (e) => {
 
@@ -84,6 +89,8 @@ export default function ModRecipe(props) {
           }));
     }
 
+    //Al aplicar un cambio, hago el dispatch correspondiente y me redirecciona a tus recetas
+
     const handleSubmit = (e) => {
         try {
             e.preventDefault()
@@ -97,16 +104,17 @@ export default function ModRecipe(props) {
         
 
     }
-
+    //Se encarga de setear el tipo de accion
     const handleType = (e) =>{
         setType({type:e.target.value})
         
     }
-
+    //Setea la dieta que modificar
     const handleDiet = (e) => {
         setDiet({diet: e.target.value})
         console.log(type.type)
     }
+    //Este se encarga de que cuando se aplique los cambios de la dieta, se actualize la base de datos
     const handleSubmitDiet = () => {
         try {
             const body = {
@@ -123,7 +131,7 @@ export default function ModRecipe(props) {
         
 
     }
-
+    //Crea las opciones de dietas para modificar
     const createOptions = () => {
         //console.log(dietTypes)
         return dietTypes.map( (dietT) => {
@@ -132,7 +140,7 @@ export default function ModRecipe(props) {
             )
         })
     }
-
+    //Crea un listado de dietas en los detalles de la receta
     const createDiets = () => {
         return detail.diets?.map( diet => {
             return(

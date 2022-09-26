@@ -1,5 +1,5 @@
 
-
+//Estos son los estados globales que voy a necesitar
 const initialState = {
     recipes: [],
     recipeDetail: {},

@@ -4,8 +4,9 @@ const {Op, Diet, Recipe} = require('../db')
 const {API_KEY} = process.env
 const {db, conn} = require('../db');
 const noImage = "https://img.icons8.com/ios/500/no-image.png"
-//const RECETAS_API_SIMPLE = "https://api.spoonacular.com/recipes/complexSearch?apiKey="+API_KEY+"&addRecipeInformation=true&number=10"
-const RECETAS_API_SIMPLE = "https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5"
+const RECETAS_API_SIMPLE = "https://api.spoonacular.com/recipes/complexSearch?apiKey="+API_KEY+"&addRecipeInformation=true&number=100"
+//const RECETAS_API_SIMPLE = "https://run.mocky.io/v3/84b3f19c-7642-4552-b69c-c53742badee5"
+//El Simplifier lo que hace es traer los datos de la api de la forma mas limpia y estadarizada posible, entonces es mas facil de navegar sus datos
 const simplifier = (recipe) => {
     if(recipe.vegetarian) recipe.diets = recipe.diets.concat("vegetarian")
     if(recipe.veryHealthy) recipe.diets = recipe.diets.concat("very healthy")
@@ -23,7 +24,7 @@ const simplifier = (recipe) => {
     return simpleRecipe
     
 }
-
+//Lo mismo aplica para las recetas de la base de datos
 const simplifierDB = recipe => {
     const simpleRecipe = {
         id: recipe.id,
@@ -37,7 +38,7 @@ const simplifierDB = recipe => {
     return simpleRecipe
 }
 
-
+//Este trae todas la recetas que se encuentran en la base de datos
 const getAllRecipesDB = async () =>{
     try {
         let recipeInDB = await Recipe.findAll({include: "diets"}) 
@@ -49,6 +50,7 @@ const getAllRecipesDB = async () =>{
    
 
 }
+//Este trae todas las recetas, incluyendo las de la base de datos y las de la api, Notese que cada vez q traigo los datos uso el simplifier
 const getAllRecipes = async () => {
     let recipeInDB = await Recipe.findAll({include: "diets"})
     recipeInDB = recipeInDB.map(rep => simplifierDB(rep))
@@ -64,17 +66,16 @@ const getAllRecipes = async () => {
     }
 }
 
-
+//Trae todas las recetas que en su titulo tenga un string especifico
 const getRecipeByName = async (recipe) => {
     const recipeInDB = await Recipe.findAll({where: {
         name:{
-            [Op.like]: '%'+recipe.toLowerCase()+'%'
+            [Op.like]: '%'+recipe.toLowerCase()+'%' //Esta validacion trae las recetas en donde coincidan el conjunto de letras 
         }
     }})
     try {
         //Aqui lo que hago es una request a la api,
-        //este me traera las recetas, lo hare json, filtrare los que tengan 
-        //las letras que coincidan y si se puede, los unire con los de la base de datos
+        //este me traera las recetas, lo hare json, filtrare los que tengan el string correspondiente en su titulo
         const allRecepies = await fetch(RECETAS_API_SIMPLE)
         let data = await allRecepies.json()
         data = data.results.filter(rep => {
@@ -89,7 +90,7 @@ const getRecipeByName = async (recipe) => {
         throw new Error("Failed request: "+error.message)
     }
 }
-
+//Este trae las recetas por ID, primero busca en la base de datos, si existe ahi ya lo retorna, sino sigue buscando
 const getRecipeById = async (idToCheck) => {
     let recipeInDB = await Recipe.findOne({where: {id: idToCheck}, include: "diets"})
     
@@ -112,13 +113,13 @@ const getRecipeById = async (idToCheck) => {
         }
     }
 }
-
+//Este crea una nueva receta y la agrega a la base de datos
 const postRecipe = async (body) => {
     
     const {id, name, resumen, healthScore, steps, image, diets} = body
     if(id && name && resumen){
         try {
-            let dietsArray = await Diet.findAll({where: {name: diets}})
+            let dietsArray = await Diet.findAll({where: {name: diets}}) //Creo un array con todos las dietas que coincidan con las dietas que quiero conectar
             //console.log(await dietsArray)
             await Recipe.create({
                 id: id,
@@ -132,7 +133,7 @@ const postRecipe = async (body) => {
             const newRecipe = await Recipe.findByPk("D"+id)
             await newRecipe.addDiets(dietsArray)
             //Si no se agregaron bien las dietas, se elimina la receta
-            //Seguramente hay una forma mas eficiente de hacer esto, chequear despues
+            
             if(await newRecipe.countDiets() !== diets.length){
                 await Recipe.destroy({where: {id: "D"+id}})
                 throw new Error("Hubo un error al agregar las dietas")
@@ -149,12 +150,12 @@ const postRecipe = async (body) => {
     }
 
 }
-
+//Este trae todas las dietas, simple
 const getDiets = async () => {
     const allDiets = await Diet.findAll()
     return allDiets
 }
-
+//Este me trae todas las recetas que tenga la dieta relacionada, lo hago con query porque nose hacerlo con las funciones de sequelize
 const getRecipeByDiet = async (diet) => {
     let dietNames = await conn.query(`SELECT r.id,r.name,r.resumen, r.steps, r.healthScore, r.image FROM recipes r JOIN Recipe_Diet rd ON rd.recipeId = r.id JOIN diets d ON d.id = rd.dietId WHERE d.name = "${diet}" ;`,{type: QueryTypes.SELECT})
     //dietID = JSON.stringify(dietID)
@@ -176,7 +177,7 @@ const getRecipeByDiet = async (diet) => {
         throw new Error("Request had failed: " + error.message)
     }
 }
-
+//Este me trae todas las recetas que tengan un numero especifico de healthScore, al final no lo use
 const getRecipeByHealthScore = async (score) => {
     const recipeInDB = await Recipe.findAll({where: {healthScore: score}, raw: true})
     console.log(await recipeInDB)
@@ -193,7 +194,7 @@ const getRecipeByHealthScore = async (score) => {
         throw new Error("Failed request: "+error.message)
     }
 }
-
+//Este actualiza la receta
 const updateRecipe = async (id, body) => {
     //Buscamos que exista una receta con ese id
     const receta = Recipe.findByPk(id, {raw:true})
@@ -224,7 +225,7 @@ const updateRecipe = async (id, body) => {
         throw new Error("La receta ingresada no existe (ID not found)")
     }
 }
-
+//Este elimina la receta
 const deleteRecipe = async (id) => {
     //Busco primero que exista la Receta
     const receta = await Recipe.findByPk(id, {raw:true})
@@ -235,6 +236,7 @@ const deleteRecipe = async (id) => {
             await Recipe.destroy({
                 where: {id: id}
             })
+            //Chequeo si sigue existiendo, si es asi, tiro un error
             const check = await Recipe.findByPk(id, {raw:true})
             if(await check) throw new Error("La receta no se elimino correctamente")
             return "La receta se elimino exitosamente!"
@@ -248,7 +250,7 @@ const deleteRecipe = async (id) => {
     }
     
 }
-
+//Este me deja agregar una dieta mas a una de nuestra recetas
 const updateDietInRecipe = async (body) => {
     const {recId, diet} = body
     console.log(recId, diet)
@@ -257,6 +259,7 @@ const updateDietInRecipe = async (body) => {
         const dietToAdd = await Diet.findOne({where: {name: diet}})
         const aux = await recipe.countDiets()
         recipe.addDiet(await dietToAdd)
+        //Si la cantidad de recetas no cambio, hubo un error al agregar
         if(aux >= recipe.countDiets()){
             throw new Error("Hubo un error durante la operacion de agregar la dieta")
         }
@@ -266,6 +269,7 @@ const updateDietInRecipe = async (body) => {
         throw new Error("Los datos ingresados son insuficientes")
     }
 }
+//Este elimina una dieta en una receta, se controla igual que el de arriba
 const deleteDietInRecipe = async (body) => {
     const {recId, diet} = body
     console.log(recId, diet)

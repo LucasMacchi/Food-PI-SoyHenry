@@ -4,7 +4,14 @@ import {useDispatch, useSelector } from "react-redux";
 import * as actions from "../../Redux/actions"
 import "../../Styles/AddRecipe.css"
 
+//Esta funcion se encarga de controlar los datos y a si hay, agregarlos a un objeto de errores
+//El nombre tiene que existir y no tener caracteres especiales
+//Resumen tiene que existir
+//HealthScore tiene que ser un numero y no puede ser mayor a 100 o menor a 1
+//El id tiene que ser un numero y chequea que no este repetido
+
 export function validate(input, recetas){
+    
     let errors = {}
         if(!input.name){
             console.log("Nombre es requerido")
@@ -37,12 +44,13 @@ export default function AddRecipe() {
 
     const dietTypes = useSelector(state => state.dietTypes)
     const dispatch = useDispatch()
+    //Al montar el componente, traigo todas las recetas creadas por el usuario y las dietas
     useEffect(()=>{
         dispatch(actions.getAllRecipesDB())
         dispatch(actions.getDiets())
         console.log(">")
     }, [])
-
+    //Este estado se encarga de almacenar los datos de la nueva receta
     const [input, setInput] = React.useState({
         id: 1,
         name: "",
@@ -52,24 +60,25 @@ export default function AddRecipe() {
         image: "",
         diets: []
     })
-    const [errors, setErrors] = React.useState({});
+    const [errors, setErrors] = React.useState({}); //Este estado controla los errores del validate
 
+    //Esta funcion se encarga de crear un array de dietas que seran los vinculados a la dieta
     const handleChangeArray = (e) =>{
         let newDiet = e.target.value 
-        let diets = new Set([...input.diets])
-        if(!diets.has(newDiet)){
+        let diets = new Set([...input.diets])   //Necesito un set para que se repitan las dietas
+        if(!diets.has(newDiet)){ //Si este array no tiene la dieta, se la agrega sino, se elimina
             diets.add(newDiet)
         }else{
             diets.delete(newDiet)
         }
         diets = Array.from(diets)
-        setInput({
+        setInput({  //Lo seteo en el Input
             ...input,
             diets
         })
         
     }
-
+    //Este actualiza los datos del input y controla los errores
     const handleChange = (e) => {
 
         setInput({
@@ -84,14 +93,14 @@ export default function AddRecipe() {
           }, recetas));
           
     }
-
+    //Al aplicar los cambios, se la agrega a la base de datos
     const handleSubmit = (e) => {
         console.log(input)
         dispatch(actions.create_Recipe(input))
         alert("Receta Agregada")
         
     }
-
+    //Crea las dietas con "checkboxes"
     const createOptions = () => {
         return dietTypes.map( (diet) => {
             return(

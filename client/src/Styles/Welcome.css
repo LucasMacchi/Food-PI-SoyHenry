@@ -9,6 +9,19 @@
     background-color: darkslategray;
     display: block;
     text-align: center;
+    justify-content: center;
+    width: 25%;
+    margin-left: 36%;
+    margin-top: 8.4pc;
+    border-radius: 2pc;
+    padding: 1pc;
+    margin-bottom: 8.3pc;
+
+}
+
+/*    background-color: darkslategray;
+    display: block;
+    text-align: center;
     padding-bottom: 50px;
     padding-top: 50px;
     margin-top: 7.27pc;
@@ -16,7 +29,4 @@
     margin-right: 30pc;
     margin-left: 30pc;
     border-radius: 2pc;
-    
-
-}
-
+    */

@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-import {Route} from 'react-router-dom';
+import {Redirect, Route} from 'react-router-dom';
 import background from "./images/image_background.jpg"
 import Home from "./Components/Main_Page/Home.jsx"
 import Cabeza from "./Components/Others/Cabeza.jsx"
@@ -21,13 +21,14 @@ function App() {
         <React.Fragment >
           <Cabeza/>
           <Nav/>
-          <Route exact path="/" component={Welcome}/>
+          <Route index exact path="/" component={Welcome}/>
           <Route exact path="/Recetas" component={Home}/>
           <Route exact path="/Agregar" component={AddRecipe}/>
           <Route exact path="/Tus_recetas" component={OwnRecipes}/>
           <Route exact path="/Modificar/:id" component={ModRecipe}/>
           <Route exact path="/About" component={About}/>
           <Route path = "/Receta/:id" component={Detail}/>
+          <Route path="*" render={() => <Redirect to="/"/>}/>
           <Footer/>
       </React.Fragment>
     </div>

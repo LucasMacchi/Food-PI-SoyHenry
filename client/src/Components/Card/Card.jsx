@@ -15,6 +15,8 @@ export default function Card(receta){
     const width = 150
     const height = 150
 
+    //Esta funcion se encarga de eliminar la receta, requiere una confirmacion
+
     const clickActionDelete = () => {
         if(window.confirm("Estas seguro que quiere eliminar la receta?")){
             dispatch(actions.deleteRecipe(receta.id))
@@ -22,6 +24,7 @@ export default function Card(receta){
             window.location.reload(false)
         }
     }
+    //Este se encarga de Redireccionar a los detalles de la receta cuando se le hace click a la "carta"
     const shower = () => {
         if(receta.id !== undefined && receta.id[0] === "D"){
             return(

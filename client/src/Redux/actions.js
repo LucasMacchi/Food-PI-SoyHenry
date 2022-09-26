@@ -7,13 +7,12 @@ const GET_RECIPE_BY_HS = "GET_RECIPE_BY_HS"
 const GET_RECIPE_BY_DIET = "GET_RECIPE_BY_DIET"
 const CREATE_RECIPE = "CREATE_RECIPE"
 const UPDATE_RECIPE = "UPDATE_RECIPE"
-const DELETE_RECIPE = "DELETE_RECIPE"
-const UPDATE_RECIPE_DIET = "UPDATE_RECIPE_DIET"
 const GET_DIETS = "GET_DIETS"
 
 
 const api = "http://localhost:3001"
 
+//Me trae todas las recetas
 export const getAllRecipes = () => {
     return async (dispatch) => {
         try {
@@ -27,7 +26,7 @@ export const getAllRecipes = () => {
         
     }
 }
-
+//Me trae todos las recetas creadas por el usuario
 export const getAllRecipesDB = () => {
     return async (dispatch) => {
         try {
@@ -40,7 +39,7 @@ export const getAllRecipesDB = () => {
         
     }
 }
-
+//Trae los detalles de una receta usando un id
 export const getRecipeDetail = (id) =>{
     return async (dispatch) => {
         try {
@@ -53,6 +52,7 @@ export const getRecipeDetail = (id) =>{
         
     }
 }
+//Trae todos las recetas que tengan el string de "name" en su titulo
 export const getRecipeByName = (name) =>{
     return async (dispatch) => {
         try {
@@ -65,6 +65,7 @@ export const getRecipeByName = (name) =>{
         
     }
 }
+
 export const getRecipeByHS = (hs) =>{
     return async (dispatch) => {
         try {
@@ -77,6 +78,7 @@ export const getRecipeByHS = (hs) =>{
         
     }
 }
+//Trae todas las dietas que tengan el tipo de dieta especifica
 export const getRecipeByDiet = (diet) =>{
     return async (dispatch) => {
         try {
@@ -89,6 +91,7 @@ export const getRecipeByDiet = (diet) =>{
         
     }
 }
+//Crea la receta
 export const create_Recipe = (recipe) =>{
     return async (dispatch) => {
         try {
@@ -102,9 +105,9 @@ export const create_Recipe = (recipe) =>{
         
     }
 }
-
+//Actualiza la receta
 export const updateRecipe = (id,body) => {
-    return async (dispatch) => {
+    return async () => {
         try {
             await axios.put(api+"/recipes/update/"+id,body)
             //dispatch({ type: UPDATE_RECIPE, payload: data })
@@ -114,7 +117,7 @@ export const updateRecipe = (id,body) => {
         }
     }
 }
-
+//Elimina la receta
 export const deleteRecipe = (id) => {
     return async (dispatch) => {
         try {
@@ -126,7 +129,7 @@ export const deleteRecipe = (id) => {
         }
     }
 }
-
+//Agrega una dieta a una receta
 export const addDiet = (body) => {
     return async () => {
         try {
@@ -138,7 +141,7 @@ export const addDiet = (body) => {
         }
     }
 }
-
+//Trae todas las dietas de la Base de Datos
 export const getDiets = () =>{
     return async (dispatch) => {
         try {

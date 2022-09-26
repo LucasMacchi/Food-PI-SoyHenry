@@ -9,11 +9,18 @@ import "../../Styles/OwnRecipes.css"
 export default function OwnRecipes (){
     const dispatch = useDispatch()
     const recetasDB = useSelector(state => state.filteredRecipes)
+    //Traigo todos los datos cuando se monta el componente
     useEffect(() => {
-        dispatch(actions.getDiets())
-        dispatch(actions.getAllRecipesDB())
+        try {
+            dispatch(actions.getDiets())
+            dispatch(actions.getAllRecipesDB())
+        } catch (error) {
+            alert("Ocurrio un error cargando los datos: "+error.message)
+        }
+        
     }, [])
     console.log(recetasDB)
+    //Crea cartas con los componentes creados por el usuario
     const createCards = () => {
         return recetasDB.map((rep) =>  {
             //console.log(rep.id)
