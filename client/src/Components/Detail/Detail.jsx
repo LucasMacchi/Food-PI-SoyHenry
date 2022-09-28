@@ -13,6 +13,7 @@ export default function Detail(props){
     const id = props.match.params.id
 
     useEffect(() => {
+        dispatch(actions.resetDetail())
         dispatch(actions.getRecipeDetail(id))
         
     },[])
@@ -30,8 +31,8 @@ export default function Detail(props){
         })
     }
 
-    return(
-        <div id="div_detail">
+    const loading = () => {
+        return(
             <div id="div_detail_info">
                 <h1 className="tituloDE">{receta.name}</h1>
                 <p className="tituloDE">Resumen</p>
@@ -49,6 +50,12 @@ export default function Detail(props){
                 </div>
 
             </div>
+        )
+    }
+
+    return(
+        <div id="div_detail">
+            {receta.id ? loading() : <h1>CARGANDO</h1>}
             
         </div>
     )

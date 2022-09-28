@@ -17,6 +17,7 @@ export default function Home () {
     useEffect(() => { 
         if(recetas.length === 0){
             dispatch(actions.getAllRecipes())
+            
         }
         if(dietTypes.length === 0){
             dispatch(actions.getDiets())
@@ -34,11 +35,14 @@ export default function Home () {
         const [page, setPage] = React.useState({current: 1,prev: 0, max: filtro.filtrado.length / ITEMS_PER_PAGE})  //Me deja controlar el paginado
         ///////////////////////////////
         useEffect(() => {   //Este actualizara el filtrado cada vez que "recetas" (totas las recetas sin filtrar) se actualice, se usa en caso de ordenamientos
+            console.log("iniciado")
             setFiltro({filtrado: arrayDiveder(recetas)})
             setPage({...page,max: Math.round(recetas.length / ITEMS_PER_PAGE)})
         },[recetas])
         //pasa exactamente los mismo aca
         useEffect(() => {
+            console.log("FILTRACION: ",recetasFiltradas)
+            //if(!recetasFiltradas) alert("No se encontro lo que se busca")
             setFiltro({filtrado: arrayDiveder(recetasFiltradas)})
             setPage({prev: 0,current: 1,max: Math.round(recetasFiltradas.length / ITEMS_PER_PAGE)})
         },[recetasFiltradas])
@@ -55,17 +59,20 @@ export default function Home () {
         else if(order.order === "diet"){
             dispatch(actions.getRecipeByDiet(order.payload))
             console.log("FILTRADO POR DIETA => ",filtro.filtrado)
+            
         }
         else if(order.order ==="ordering" && order.payload === "hs_asc"){
             if(filtro.filtrado.length === recetasFiltradas.length){
                 setFiltro({
-                    filtrado: arrayDiveder(recetasFiltradas.sort((a,b) => comparadorHS_A(a,b)))
+                   filtrado: arrayDiveder(recetasFiltradas.sort((a,b) => comparadorHS_A(a,b)))
+                   
                 })
                 console.log("FILTRADO POR DIETA Y HS ASC => ",filtro.filtrado)
             }
             else{
                 setFiltro({
                     filtrado: arrayDiveder(recetas.sort((a,b) => comparadorHS_A(a,b)))
+                    
                 })
                 console.log("ORDENADO POR HS ASC => ",filtro.filtrado)
             }
@@ -90,6 +97,7 @@ export default function Home () {
             if(filtro.filtrado.length === recetasFiltradas.length){
                 setFiltro({
                     filtrado: arrayDiveder(recetasFiltradas.sort((a,b) => comparadorAL_A(a,b)))
+                    
                 })
                 console.log("FILTRADO POR DIETA Y alfabeticamente ASC => ",filtro.filtrado)
             }
@@ -117,7 +125,6 @@ export default function Home () {
         else if(order.order ==="search"){
             console.log(order.payload)
             dispatch(actions.getRecipeByName(input.name))
-            
         }
     },[order])
     //Este me deja que cada vez que se actualiza la pagina, tengo que dividir devuelta el array de recetas para mostrar las siguientes
@@ -193,6 +200,7 @@ export default function Home () {
     }
     //Components creators
     const createCardsFiltered = () => {
+        
         return filtro.filtrado.map((rep) =>  {
             //console.log(rep.id)
             return(

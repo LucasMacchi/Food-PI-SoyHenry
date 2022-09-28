@@ -1,6 +1,7 @@
 #modDiv{
     display: flex;
     justify-content: space-between;
+    min-height:39.1pc;
 }
 
 .modComDiv{

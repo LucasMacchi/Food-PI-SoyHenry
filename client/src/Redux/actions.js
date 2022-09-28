@@ -86,7 +86,9 @@ export const getRecipeByDiet = (diet) =>{
             const json = await res.json()
             dispatch({ type: GET_RECIPE_BY_DIET, payload: json })
         } catch (error) {
-            console.log("Error al traer las recetas: "+error.message)
+            alert("No se logro trae la informacion, puede que no haya ninguna receta que cumpa los requisitos")
+            //console.log("Error al traer las recetas: "+error.message)
+            
         }
         
     }
@@ -152,6 +154,12 @@ export const getDiets = () =>{
             console.log("Error al traer las dietas: "+error.message)
         }
         
+    }
+}
+
+export const resetDetail = () => {
+    return async (dispatch) => {
+        dispatch({type: GET_RECIPE_DETAIL, payload: {}})
     }
 }
 

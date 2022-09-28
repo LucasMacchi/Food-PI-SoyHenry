@@ -12,7 +12,7 @@ const rootReducer = (state = initialState, action) => {
         case "GET_ALL_RECIPES":
             return{
                 ...state,
-                recipes: state.recipes.concat(action.payload)
+                recipes: action.payload
             }
         case "GET_ALL_RECIPES_FROM_DB":
                 return{
